@@ -1,0 +1,12 @@
+/* STICKY FOOTER CSS CODE COPIED FROM MATERIALIZE PAGE TO MAKE OUR FOOTER ALWAYS 
+STAYS ON THE BOTTOM OF THE PAGE REGARDLESS OF HOW LITTLE CONTENT IS ON EACH PAGE. */
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+      
