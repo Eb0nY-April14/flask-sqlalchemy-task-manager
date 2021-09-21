@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="light-blue-text text-darken-4 center-align">Categories</h3>
+
+<div class="row">
+    <div class="col s12 center-align">
+        <!-- The 'url_for()' method on our links calls the actual Python functions within 
+        the app.route & not the app.route itself, even though they often have the same name. -->
+        <!-- When a user clicks on the large button in 'categories.html' page to add a new 
+        category, the 'add_category' function in 'routes.py' is called which will in turn 
+        render the template called 'add_category.html' that will display a form to add the desired category.  -->
+        <a href="{{ url_for('add_category') }}" class="btn-large light-blue darken-2">
+            Add Category <i class="fas fa-plus-square right"></i>
+        </a>
+    </div> 
+
+
+</div>
+
+{% endblock %}
