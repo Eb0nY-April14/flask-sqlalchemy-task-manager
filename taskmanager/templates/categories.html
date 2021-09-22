@@ -16,7 +16,7 @@
     </div> 
 </div>
 
-<div class="row">
+<div class="row"> <!-- row class starts -->
     <!-- We've only added the category of 'Travel' so to add more categories, we have to loop.
     We'll prepare the code below to recognize multiple cards, by using the Jinja syntax of a for-loop. 
     NOTE: We don't want each card to stack on top of each other but to flow within the same row, each 
@@ -25,16 +25,20 @@
     passed over from our Python function, it will generate a new column and card. -->
     
     {% for category in categories %}
-    <div class="col s12 m6 l3">
-        <div class="card light-blue darken-4 center-align">
-            <div class="card-content white-text">
+    <div class="col s12 m6 l3"> <!-- col s12 class starts -->
+        <div class="card light-blue darken-4 center-align"> <!-- card class starts --> 
+            <div class="card-content white-text"> <!-- card-content class starts -->
                 <!-- Since we are within a for-loop, we need to use the newly defined index variable of 
                 'category', we also need to use dot-notation and tell it which key should be printed here.
                 For example, If we wanted to show the primary key instead, stored within our database as 
                 'id', it would be 'category.id'  -->
                 <span class="card-title">{{category.category_name}}</span>
-            </div>
-            <div class="card-action">
+            </div> <!-- card-content class ends -->
+            <!-- This will prevent any random stranger from editing and deleting your database records.
+            These edit and delete buttons will only be shown if the owner of those categories is the one 
+            viewing the page. -->
+            
+            <div class="card-action"> <!-- card-action class starts -->
                 <!-- We used 'url_for' to wrap the 'edit_category' function bcos it is our custom-made function 
                 (i.e we wrote it ourselves) & not a function taken from a library or framework. Apart from 
                 calling our new 'edit_category' function, we need to pass another argument to specify which 
@@ -44,12 +48,11 @@
                     the 'ID' primary key.In other words, we'll call this 'category_id' & set that equal to the 
                     current 'category.id' using dot-notation again. -->
                 <a href="{{ url_for('edit_category', category_id=category.id) }}" class="btn green accent-4">Edit</a>
-                <a href="#" class="btn red">Delete</a>
-            </div>
-        </div>
-    </div>
+                <a href="{{ url_for('delete_category', category_id=category.id) }}" class="btn red">Delete</a>    
+            </div> <!-- card-action class ends -->
+        </div>  <!-- card class ends -->  
+    </div> <!-- col s12 class ends-->
     {% endfor %}
-</div>
-
+</div> <!-- row class ends -->
 
 {% endblock %}

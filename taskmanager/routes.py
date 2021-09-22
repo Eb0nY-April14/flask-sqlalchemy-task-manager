@@ -76,4 +76,12 @@ def edit_category(category_id):
     # We can now pass that variable into the rendered template, which is expecting it to be 
     # called 'category' & that will be set equal to the 'category' variable defined within 
     # the 'edit_category' function.
-    return render_template("edit_category.html", category=category)         
+    return render_template("edit_category.html", category=category) 
+
+
+@app.route("/delete_category/<int:category_id>", methods=["GET", "POST"])
+def delete_category(category_id):  
+    category = Category.query.get_or_404(category_id)
+    db.session.delete(category)
+    db.session.commit()
+    return redirect(url_for("categories"))       
