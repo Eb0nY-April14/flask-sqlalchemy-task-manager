@@ -48,4 +48,32 @@ def add_category():
         # After submitting, adding & committing the new data from the form to our database, we 
         # then redirect the user back to the 'categories' page.
         return redirect(url_for("categories"))
-    return render_template("add_category.html")          
+    return render_template("add_category.html")  
+
+# Since we gave an argument of 'category_id' for when clicking the href 'Edit' button in our 
+# 'categories.html' file, this also needs to appear here in our app.route. These types of 
+# variables being passed back into our Python functions must be wrapped inside of angle-brackets 
+# within the URL. We also need to cast the 'ID' primary key as an 'int' since we know that all 
+# our primary keys must be integers.
+@app.route("/edit_category/<int:category_id>", methods=["GET", "POST"])
+# We also need to pass the 'category_id' variable directly into the function so we can have the
+# value available to use within this function.
+def edit_category(category_id):
+    # What this code below does is use the SQLAlchemy method called '.get_or_404()', which takes 
+    # the argument of 'category_id' to query the database and attempts to find the specified 
+    # record using the data provided. If no match is found, it will trigger a 404 error page.
+    category = Category.query.get_or_404(category_id)
+    # The final step is to add the "POST" functionality so the database actually gets updated with 
+    # the requested changes. We'll check using 'if' statement whether the requested method is equal 
+    # to "POST". If so, then we'll update the category_name for our category variable, and we'll set 
+    # that to equal the form's name-attribute of 'category_name'.
+    if request.method == "POST":
+        category.category_name = request.form.get("category_name")
+        db.session.commit()
+        # if the 'POST' & commit are successful, we then redirect the users back to the 'categories'
+        # function which will display all of the categories in the cards once again.
+        return redirect(url_for("categories"))
+    # We can now pass that variable into the rendered template, which is expecting it to be 
+    # called 'category' & that will be set equal to the 'category' variable defined within 
+    # the 'edit_category' function.
+    return render_template("edit_category.html", category=category)         

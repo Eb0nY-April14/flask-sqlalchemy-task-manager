@@ -35,7 +35,15 @@
                 <span class="card-title">{{category.category_name}}</span>
             </div>
             <div class="card-action">
-                <a href="#" class="btn green accent-4">Edit</a>
+                <!-- We used 'url_for' to wrap the 'edit_category' function bcos it is our custom-made function 
+                (i.e we wrote it ourselves) & not a function taken from a library or framework. Apart from 
+                calling our new 'edit_category' function, we need to pass another argument to specify which 
+                particular category we are attempting to update. Ensure to add a comma after the single-quotes
+                to denote that we are calling the 'edit_category' function with some data included. -->
+                <!-- For the argument name, it can be whatever we choose but must be unique so it's best to use 
+                    the 'ID' primary key.In other words, we'll call this 'category_id' & set that equal to the 
+                    current 'category.id' using dot-notation again. -->
+                <a href="{{ url_for('edit_category', category_id=category.id) }}" class="btn green accent-4">Edit</a>
                 <a href="#" class="btn red">Delete</a>
             </div>
         </div>
