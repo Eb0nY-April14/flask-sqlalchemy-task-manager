@@ -10,9 +10,18 @@ def home():
     return render_template("tasks.html")   
 
 
+# Whenever we call this function by clicking the navbar link for Categories, it will query
+# the database and retrieve all records from this table, then sort them by the category name.
 @app.route("/categories")
 def categories():
-    return render_template("categories.html")  
+    # The .all() method used here is known as a Cursor Object, which is similar to an array or 
+    # list of records.
+    categories = list(Category.query.order_by(Category.category_name).all())
+    # categories=categories. The 1st declaration of 'categories' is the variable name that we
+    # gave our file i.e categories.html which we can now use within the HTML template.
+    # The 2nd 'categories', which is now a list(), is the variable defined within our function
+    # above, which is why, once again, it's important to keep your naming convention quite similar.
+    return render_template("categories.html", categories=categories)  
 
 
 # When a user clicks the "Add Category" button, this will use the "GET" method and render the 

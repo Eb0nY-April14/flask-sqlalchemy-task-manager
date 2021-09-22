@@ -14,8 +14,34 @@
             Add Category <i class="fas fa-plus-square right"></i>
         </a>
     </div> 
-
-
 </div>
+
+<div class="row">
+    <!-- We've only added the category of 'Travel' so to add more categories, we have to loop.
+    We'll prepare the code below to recognize multiple cards, by using the Jinja syntax of a for-loop. 
+    NOTE: We don't want each card to stack on top of each other but to flow within the same row, each 
+    having their own column. -->
+    <!-- The for-loop we're using here means that for each 'category' in the ‘list of categories' being 
+    passed over from our Python function, it will generate a new column and card. -->
+    
+    {% for category in categories %}
+    <div class="col s12 m6 l3">
+        <div class="card light-blue darken-4 center-align">
+            <div class="card-content white-text">
+                <!-- Since we are within a for-loop, we need to use the newly defined index variable of 
+                'category', we also need to use dot-notation and tell it which key should be printed here.
+                For example, If we wanted to show the primary key instead, stored within our database as 
+                'id', it would be 'category.id'  -->
+                <span class="card-title">{{category.category_name}}</span>
+            </div>
+            <div class="card-action">
+                <a href="#" class="btn green accent-4">Edit</a>
+                <a href="#" class="btn red">Delete</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
 
 {% endblock %}
