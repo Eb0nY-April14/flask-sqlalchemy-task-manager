@@ -84,4 +84,31 @@ def delete_category(category_id):
     category = Category.query.get_or_404(category_id)
     db.session.delete(category)
     db.session.commit()
-    return redirect(url_for("categories"))       
+    return redirect(url_for("categories"))  
+
+
+@app.route("/add_task", methods=["GET", "POST"])
+def add_task():
+    categories = list(Category.query.order_by(Category.category_name).all())
+    if request.method == "POST":
+        task = Task(
+            task_name=request.form.get("task_name"),
+            task_description=request.form.get("task_description"),
+            is_urgent=bool(True if request.form.get("is_urgent") else False),
+            due_date=request.form.get("due_date"),
+            category_id=request.form.get("category_id")
+        )
+        # Ensure that this Category model uses the same exact keys that the model is
+        # expecting as its argument so when in doubt, copy from the models.py file directly.
+        # For this task_name field, we can then use the requested form being posted to 
+        # retrieve the name-attribute. This is why it's important to keep the naming convention 
+        # consistent, which means our name-attribute matches that of our database model.
+        db.session.add(task)
+        db.session.commit()
+        # After submitting, adding & committing the new data from the form to our database, we 
+        # then redirect the user back to the 'categories' page.
+        return redirect(url_for("home"))
+    # The 1st 'categories' listed in the 'return render_template()' below is the variable name 
+    # that we will be able to use on the template itself.
+    # The 2nd 'categories' is simply the list of categories retrieved from the database defined above.    
+    return render_template("add_task.html", categories=categories)      
