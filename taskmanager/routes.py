@@ -5,17 +5,27 @@ from taskmanager.models import Category, Task
 
 # The 'tasks.html' is now our Home Page so when a user visits our site, they're brought to 
 # the tasks page, which will automatically extend all of the content from our base template.
+# To display existing tasks to the user (i.e on the front-end) is the 'Read' part of 'CRUD' 
+# functionality. We'll 1st extract all of the tasks from our database so we'll open the 
+# routes.py file & since our tasks are listed on the home page, we'll find the 'home' function 
+# at the top & add a new variable called 'tasks' & assign it a list of the query method used.
+        # TO DISPLAY ALL TASKS IN THE DATABASE TO THE USER (SIMILAR TO THE 'categories' FUNCTION BELOW).
 @app.route("/")
 def home():
-    return render_template("tasks.html")   
+    tasks = list(Task.query.order_by(Task.id).all())
+    return render_template("tasks.html", tasks=tasks)   
 
 
+            # TO DISPLAY ALL CATEGORIES IN THE DATABASE TO THE USER.
 # Whenever we call this function by clicking the navbar link for Categories, it will query
 # the database and retrieve all records from this table, then sort them by the category name.
 @app.route("/categories")
 def categories():
     # The .all() method used here is known as a Cursor Object, which is similar to an array or 
-    # list of records.
+    # list of records. Anytime we query the database, a 'Cursor Object' or 'QuerySet' is returned
+    # & it can't be used on the front-end or with some of the Jinja template filters so it's good 
+    # to convert your queries into Python lists by wrapping any query in a Python list() as done
+    # with the 'categories' variable below & other places where we queried using '.all()'.
     categories = list(Category.query.order_by(Category.category_name).all())
     # categories=categories. The 1st declaration of 'categories' is the variable name that we
     # gave our file i.e categories.html which we can now use within the HTML template.
@@ -50,6 +60,8 @@ def add_category():
         return redirect(url_for("categories"))
     return render_template("add_category.html")  
 
+
+                # TO EDIT A CATEGORY IN THE DATABASE BY THE USER
 # Since we gave an argument of 'category_id' for when clicking the href 'Edit' button in our 
 # 'categories.html' file, this also needs to appear here in our app.route. These types of 
 # variables being passed back into our Python functions must be wrapped inside of angle-brackets 
@@ -79,6 +91,7 @@ def edit_category(category_id):
     return render_template("edit_category.html", category=category) 
 
 
+        # TO DELETE A CATEGORY IN THE DATABASE BY THE USER
 @app.route("/delete_category/<int:category_id>", methods=["GET", "POST"])
 def delete_category(category_id):  
     category = Category.query.get_or_404(category_id)
@@ -87,6 +100,7 @@ def delete_category(category_id):
     return redirect(url_for("categories"))  
 
 
+# TO ADD A TASK TO THE DATABASE BY THE USER
 @app.route("/add_task", methods=["GET", "POST"])
 def add_task():
     categories = list(Category.query.order_by(Category.category_name).all())
@@ -111,4 +125,4 @@ def add_task():
     # The 1st 'categories' listed in the 'return render_template()' below is the variable name 
     # that we will be able to use on the template itself.
     # The 2nd 'categories' is simply the list of categories retrieved from the database defined above.    
-    return render_template("add_task.html", categories=categories)      
+    return render_template("add_task.html", categories=categories) 

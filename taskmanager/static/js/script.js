@@ -5,7 +5,7 @@
     var instances = M.Sidenav.init(elems, options);
   }); */
 
-/* CUSTOMISED JS CODE */
+/* CUSTOMISED JS CODE: TO INITIALISE ALL OUR ELEMENTS VIA JAVASCRIPT */
 document.addEventListener('DOMContentLoaded', function() {
     // sidenav initialisation
     let sidenav = document.querySelectorAll('.sidenav');
@@ -21,4 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // select initialisation 
     let selects = document.querySelectorAll('select');
     M.FormSelect.init(selects);
+
+    // collapsible elements initialisation
+    let collapsibles = document.querySelectorAll('.collapsible');
+    M.Collapsible.init(collapsibles);
 });

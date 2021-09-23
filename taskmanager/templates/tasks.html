@@ -16,4 +16,30 @@
     </div> 
 </div>
 
+<!-- We need to have a means of displaying the tasks to the user (i.e like a container), since our 'tasks' 
+    contain more information than the 'categories', we'll use Materialize's collapsibles which is Javascript. 
+We'll copy the entire code snippet & paste this within our tasks.html template below the existing row. -->
+<!-- Since we'll have an unknown number of tasks, we'll create a for-loop over each task & have it dynamically 
+add a list-item for each Task from the database. -->
+<ul class="collapsible">
+    {% for task in tasks|sort(attribute="due_date") %}
+    <li>
+        <div class="collapsible-header white-text light-blue darken-4">
+            <i class="fas fa-caret-down"></i>
+            <!-- This will display the actual task name so we'll add the variable 'task.task_name'
+            wrapped in curly braces within the strong tag since that's the column header we assigned 
+            in the models.py file. We'll also add the due date using the database column header of 'due_date'.  -->
+            <strong>{{ task.task_name }}</strong> : {{ task.due_date.strftime("%d %B, %Y") }}
+            {% if task.is_urgent == True %}
+                <i class="fas fa-exclamation-circle light-blue-text text-lighten-2"></i>
+            {% endif %}
+        </div>
+      <div class="collapsible-body">
+          <strong>{{ task.category }}</strong>
+          <p>{{ task.task_description }}</p>
+      </div>
+    </li>
+    {% endfor %}
+</ul>
+
 {% endblock %}
