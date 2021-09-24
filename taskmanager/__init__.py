@@ -7,7 +7,16 @@ if os.path.exists("env.py"):
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")
+# Usually, the app is configured to look for the local database during development 
+# but for deployment to Heroku, it has to point to Heroku's database or else Heroku 
+# won't see the db. To do this, we'll add a conditional check for Heroku's Postgres 
+# database i.e if the "DEVELOPMENT" environment variable is set to True, then we are 
+# working with our local database otherwise, since we didn't set that variable on 
+# Heroku, then it should use Heroku's "DATABASE_URL" instead.
+if os.environ.get("DEVELOPMENT") == "True":
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")  # local database
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")  # Heroku database
 
 db = SQLAlchemy(app)
 
